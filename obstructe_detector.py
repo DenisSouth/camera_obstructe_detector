@@ -25,7 +25,7 @@ def is_camera_obstructed(frame: np.ndarray, threshold=0.2, debug=False) -> bool:
                                             height=frame.shape[0] // 8,
                                             width=frame.shape[1] // 8)
 
-    high_freq_ratio = np.count_nonzero(central_spectrum.flatten() > 200) / central_spectrum.size
+    high_freq_ratio = np.count_nonzero(central_spectrum > 200) / central_spectrum.size
 
     if debug:
         cv2.imshow("Frame", frame)
