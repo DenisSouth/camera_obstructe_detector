@@ -1,23 +1,48 @@
-### Camera Visibility Obstruction Detector
+# Camera Obstruction Detector
 
-The process primarily involves analyzing the spectral 
-domain to discern the ratio of high frequencies. 
-This ratio is then juxtaposed against a predetermined
-threshold value between 0.0 - 1.0. If the resulting 
-value falls below this threshold, the function 
-`is_camera_obstructed` returns `True`, thereby indicating 
-that the camera's visibility is indeed obstructed. 
-If not, it returns `False`.
+Detects when a camera is physically covered by a finger, paper, tape, etc.
 
-In debug mode (`debug=True`), the original frame and the 
-spectral domain are displayed on the screen, along with 
-the high-frequency ratio.
+Uses FFT frequency analysis:
 
-This approach to video stream analysis facilitates
-camera obstruction detection not just based 
-on the frame's brightness level, but also by 
-analyzing the frequency spectrum (greater image
-details lead to higher frequencies). This methodology 
-proves to be effective in situations where the camera 
-is obscured by a transparent material, such as paper, 
-fabric, or a finger.
+- clear image: more high-frequency details
+- covered image: blurry or flat image, lower ratio
+
+Works with semi-transparent covers too.
+
+## Install
+
+```bash
+bash install.sh
+```
+
+## Usage
+
+```bash
+cam-guard
+cam-guard 1 0.15
+
+cam-private
+cam-private 0 0.12
+```
+
+Skips silently if the camera is already used by another app.
+
+Requires `notify-send` for desktop notifications.
+
+
+Exit codes:
+
+```text
+0 clear
+1 camera error
+2 obstructed
+```
+
+Pick a threshold between clear and obstructed values.
+
+## Cron
+
+```bash
+* * * * * DISPLAY=:0 cam-guard 0 0.15
+* * * * * DISPLAY=:0 cam-private 0 0.15
+```
